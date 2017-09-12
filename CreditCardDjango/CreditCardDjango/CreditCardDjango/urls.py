@@ -17,9 +17,10 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.conf.urls import include
 from CreditCard.views import login
-from CreditCard.views import regist
+from CreditCard.views import regist, change_pwd
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^login/', login,name='login'),
     url(r'^regist/', regist,name='regist'),
+    url(r'^change/', change_pwd,name='change_pwd'),
 ]

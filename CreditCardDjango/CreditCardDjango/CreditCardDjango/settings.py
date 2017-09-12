@@ -132,6 +132,9 @@ CREDIT_TOTAL = 10000
 # 每月账单日期(默认每月22日为账单日)
 STATEMENT_DAY = 6
 
+# 未登录自动跳转该页面
+LOGIN_URL = '/login/'  #这个路径需要根据你网站的实际登陆地址来设置
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
