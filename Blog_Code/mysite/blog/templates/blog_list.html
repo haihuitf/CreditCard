@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>My Blog</title>
+    {% load staticfiles %}
+    <meta name="keyword" content="My Blog">
+
+    <link href="{% static 'bootstrap/css/bootstrap.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        .blog {
+            padding: 20px 0px;
+        }
+        .blog .info span {
+            padding-right: 10px;
+        }
+        .blog .summary {
+            padding-top: 20px;
+        }
+        a:link{text-decoration:none;color:red}
+        #a:visited{color:green;text-decoration:none}
+        #a:hover{color:blue;text-decoration:none}
+        #a:active{color:orange;text-decoration:none}
+        .body{
+            background:#f5f5f5 ;
+        }
+        .header{
+            padding-top: 54px;
+        }
+        .geren
+        {
+            padding-left: 1000px;
+            margin-right: 300px;
+            color:red;
+
+        }
+        .tuijian{
+            background: green;
+            margin-right: 1100px;
+        }
+    </style>
+</head>
+<body >
+<div class="body">
+
+    <!------------------------------------- 导航栏start------------------------------------->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="/blogs/">首页</a></li>
+                <li><a href="/login/">登录</a></li>
+                <li><a href="/regist/">注册</a></li>
+                <li><a href="/logout/">退出登录</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Nav header</li>
+                        <li><a href="#">Separated link</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!-------------------------------------- 导航栏end------------------------------------------->
+    <!--header start-->
+    <div class="header">
+        <!-------------------blog start --------------->
+        <div class="tuijian">
+            <div class="wenzhang"><h1>文章</h1></div>
+            <!-- content start -->
+            <div class="content">
+                {% for blog in blogs %}
+                <!-- content start -->
+                <h3><a href="{% url 'blog_get_detail' blog.id %}" >{{ blog.title }}</a></h3>
+                <dl>
+                    <dd>
+                        <p >{{ blog.content | truncatechars:100 }}</p>
+                        <p>
+                            <span >作者:{{ blog.author }}</span><span class="left sj">日期:{{ blog.created |date:"Y-m-d H:i" }}</span>
+                            <span >分类:<a href="#" >{{ blog.category.name }}</a></span><span class="left yd"><a href="{% url 'blog_get_detail' blog.id %}" title="阅读全文">阅读全文</a></span>
+                            <span>评论数：{{blog.content_count}}</span>
+                        </p>
+                    </dd>
+                </dl>
+                {% endfor %}
+            </div>
+            <!-------------------blog end --------------->
+            <!-- content start -->
+            <!---------------- 分页start------------->
+            <div  class="pagination">
+                <span class="step-links">
+                    {% if blogs.has_previous %}
+                    <a href="?page={{ blogs.previous_page_number }}">上一页</a>
+                    {% endif %}
+                    <span class="current" >
+                        Page {{ blogs.number }} to {{ blogs.paginator.num_pages }}
+                    </span>
+                    <span class="count">
+                        总页数：{{ blogs.paginator.num_pages }}
+                    </span>
+                    {% if blogs.has_next %}
+                    <a href="?page={{ blogs.next_page_number }}">下一页</a>
+                    {% endif %}
+                </span>
+            </div>
+            <!----------------- 分页end------------->
+            <!-------------------个人信息栏start --------------->
+            <div class="geren">
+                <p>个人信息栏<p>
+                <p>个人信息栏<p>
+                <p>个人信息栏<p>
+                <p>个人信息栏<p>
+            </div>
+            <!-------------------个人信息栏end --------------->
+        </div>
+        <!-------------------blog start --------------->
+
+
+    </div>
+
+    <!--header end-->
+
+</div>
+</body>
+</html>

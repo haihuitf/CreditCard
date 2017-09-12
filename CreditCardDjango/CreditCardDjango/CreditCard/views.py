@@ -1,31 +1,59 @@
+#coding:UTF-8
 from django.shortcuts import render,render_to_response
 from CreditCardDjango import settings
 from django.http import HttpResponseRedirect
-from .forms import UserForm
+from .forms import UserForm,RegistForm
 from .models import UserInfo
+from django.template import RequestContext
 # Create your views here.
 
+#TEST
+def index(request):
+    return HttpResponseRedirect("Hello,world")
 
-
-#ÓÃ»§µÇÂ¼
-def login(req):
-    if req.method == 'POST':
-        uf = UserForm(req.POST)
+#ç”¨æˆ·ç™»å½•
+def login(request):
+    if request.method == 'POST':
+        uf = UserForm(request.POST)
         if uf.is_valid():
-            #»ñÈ¡±íµ¥ÓÃ»§ÃÜÂë
+            #è·å–è¡¨å•ç”¨æˆ·å¯†ç 
             username = uf.cleaned_data['username']
             password = uf.cleaned_data['password']
-            #»ñÈ¡µÄ±íµ¥Êı¾İÓëÊı¾İ¿â½øĞĞ±È½Ï
+            #è·å–çš„è¡¨å•æ•°æ®ä¸æ•°æ®åº“è¿›è¡Œæ¯”è¾ƒ
             user = UserInfo.objects.filter(username__exact = username,password__exact = password)
             if user:
-                #±È½Ï³É¹¦£¬Ìø×ªindex
+                #æ¯”è¾ƒæˆåŠŸï¼Œè·³è½¬index
                 response = HttpResponseRedirect('/online/index/')
-                #½«usernameĞ´Èëä¯ÀÀÆ÷cookie,Ê§Ğ§Ê±¼äÎª3600
+                #å°†usernameå†™å…¥æµè§ˆå™¨cookie,å¤±æ•ˆæ—¶é—´ä¸º3600
                 response.set_cookie('username',username,3600)
                 return response
             else:
-                #±È½ÏÊ§°Ü£¬»¹ÔÚlogin
+                #æ¯”è¾ƒå¤±è´¥ï¼Œè¿˜åœ¨login
                 return HttpResponseRedirect('/online/login/')
     else:
         uf = UserForm()
-    return render_to_response('login.html',{'uf':uf})
+    return render_to_response('login.html', {'uf': uf}, context_instance=RequestContext(request))
+
+def regist(request):
+    if request.method == "POST":
+        uf = RegistForm(request.POST)
+        if uf.is_valid():
+            username = uf.cleaned_data['username']
+            password = uf.cleaned_data['password']
+            name = uf.cleaned_data['name']
+            mobile = uf.cleaned_data['mobile']
+            bindcard = uf.cleaned_data['bindcard']
+            # å°†è¡¨å•å†™å…¥æ•°æ®åº“
+            user = UserInfo()
+            user.username = username
+            user.password = password
+            user.mobile = mobile
+            user.name = name
+            user.bindcard = bindcard
+            user.save()
+            return render_to_response('regist.html', {"username":username}, context_instance=RequestContext(request))
+    else:
+        uf = RegistForm()
+    return render_to_response("login.html", {'uf': uf}, context_instance=RequestContext(request))
+
+

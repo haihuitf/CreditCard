@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<form method="post">
+    {% csrf_token %}
+    {% for field in form %}
+标题:<input name="title" class="vTextField" id="id_title" type="text" maxLength="32"/>{%%}
+作者: <input name="author" class="vTextField" id="id_author" type="text" maxLength="16"/>
+    {{ field.label }}: {{ field }}
+    {{ field.errors }}
+    % endfor %}
+    <input type="submit" value = "提交" />
+    <div>
+    内容:<input name="content" class="vLargeTextField" id="id_content" />
+    </div>
+
+
+</form>
+</body>
+</html>

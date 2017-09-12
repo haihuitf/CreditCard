@@ -1,4 +1,4 @@
-"""CreditCardDjango URL Configuration
+"""mysite URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.9/topics/http/urls/
@@ -15,11 +15,22 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from django.conf.urls import include
-from CreditCard.views import login
-from CreditCard.views import regist
+from django.conf.urls import patterns, include, url
+from blog.views import *
+from blog.models import *
+admin.site.register([Category,Tag,Blog])
+admin.autodiscover()
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^login/', login,name='login'),
-    url(r'^regist/', regist,name='regist'),
+    #url(r'^index/$', 'blog.views.index'),
+    url(r'^blogs/$',get_blogs),
+    url(r'^detail/(\d+)/$',get_details ,name='blog_get_detail'),
+    url(r'^write/$',get_write),
+    url(r'^$', login, name='login'),
+    url(r'^login/$',login,name = 'login'),
+    url(r'^regist/$',regist,name = 'regist'),
+    url(r'^index/$',index,name = 'index'),
+    url(r'^logout/$',logout,name = 'logout'),
+    url(r'^test/',test,name='test'),
+    #url(r'^blog/', include('blog.urls')),
 ]
