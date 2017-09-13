@@ -17,10 +17,17 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.conf.urls import include
 from CreditCard.views import login
-from CreditCard.views import regist, change_pwd
+from CreditCard.views import regist, change_pwd, addCategory, modifyCategory
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    # 登录
     url(r'^login/', login,name='login'),
+    # 注册
     url(r'^regist/', regist,name='regist'),
+    # 修改密码
     url(r'^change/', change_pwd,name='change_pwd'),
+    # 添加分类
+    url(r'^category/', addCategory,name='addCategory'),
+    # 修改分类
+    url(r'^modifyCategory/', modifyCategory, name='modifyCategory')
 ]

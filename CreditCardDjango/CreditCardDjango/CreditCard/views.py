@@ -1,8 +1,8 @@
 #coding:UTF-8
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponseRedirect, HttpResponse
-from .forms import UserForm, RegistForm, ChangePwdForm
-from .models import UserInfo
+from .forms import UserForm, RegistForm, ChangePwdForm, addCategoryForm, modifyCategoryForm
+from .models import UserInfo, CardInfo, category
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 # Create your views here.
@@ -46,19 +46,36 @@ def regist(request):
     if request.method == "POST":
         uf = RegistForm(request.POST)
         if uf.is_valid():
+            # 获取表单数据
             username = uf.cleaned_data['username']
             password = uf.cleaned_data['password']
             name = uf.cleaned_data['name']
             mobile = uf.cleaned_data['mobile']
             bindcard = uf.cleaned_data['bindcard']
-            # 提交表单存入数据库
-            user = UserInfo()
-            user.username = username
-            user.password = password
-            user.mobile = mobile
-            user.name = name
-            user.bindcard = bindcard
-            user.save()
+            user = UserInfo.objects.filter(username__exact = username)
+            if len(user) == 0:
+                # 提交表单存入数据库
+                user = UserInfo()
+                user.username = username
+                user.password = password
+                user.mobile = mobile
+                user.name = name
+                user.bindcard = bindcard
+                user.save()
+                # 注册的同时生成一张信用卡
+                userId_id = user.id
+                CardInfo.objects.get_or_create(
+                    userId_id = userId_id,
+                    cardno = bindcard,
+                    password = "123456",
+                    owener = username,
+                    credTotla = 10000,
+                    creditBalance = 5000,
+                    dayRate = 0.03,
+                    freeRate = 0.03
+                )
+            else:
+                return HttpResponse("用户名已经存在")
             return render_to_response('regist.html', {"username":username}, context_instance=RequestContext(request))
     else:
         uf = RegistForm()
@@ -102,8 +119,51 @@ def change_pwd(request):
     else:
         uf = ChangePwdForm()
     return render_to_response('change.html', {'uf':uf}, context_instance=RequestContext(request))
-# 商品分类
-def category(request):
-    return
 
+# 商品分类
+def addCategory(request):
+    if request.method == "POST":
+        uf = addCategoryForm(request.POST)
+        if uf.is_valid():
+            name = uf.cleaned_data['name']
+            qcategory = category.objects.filter(name = name)
+            # 分类名称不能重复
+            if len(qcategory) == 0:
+                cate = category()
+                cate.name = name
+                cate.save()
+                return HttpResponse("success")
+            else:
+                return HttpResponse("分类名称重复")
+    else:
+        uf = addCategoryForm()
+    return render_to_response('category.html', {'uf': uf}, context_instance=RequestContext(request))
+
+def modifyCategory(request):
+    if request.method == "POST":
+        uf = modifyCategoryForm(request.POST)
+        if uf.is_valid():
+            name = uf.cleaned_data['name']
+            status = uf.cleaned_data['status']
+            qcategory = category.objects.filter(name = name)
+            if len(qcategory) == 0:
+                cate = category()
+                cate.name = name
+                cate.status = status
+                cate.save()
+                return HttpResponse("success")
+            else:
+                return HttpResponse("fail")
+    else:
+        uf = modifyCategoryForm()
+    return render_to_response("modifyCategory.html", {"uf": uf},context_instance=RequestContext(request))
+
+
+# 商品添加
+def addProduct(request):
+    if request.method == "POST":
+        uf = UserForm(request.POST)
+        if uf.is_valid():
+            return
+    return
 

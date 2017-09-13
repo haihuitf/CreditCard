@@ -79,7 +79,7 @@ class product():
     updateTime = models.DateField(auto_now_add=True)
 
 # 商品分类category
-class category():
+class category(models.Model):
 
     id = models.AutoField(primary_key=True)
     # 分类名称
