@@ -15,9 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from django.conf.urls import include
-from CreditCard.views import login
-from CreditCard.views import regist, change_pwd, addCategory, modifyCategory
+from CreditCard.views import *
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     # 登录
@@ -29,5 +27,13 @@ urlpatterns = [
     # 添加分类
     url(r'^category/', addCategory,name='addCategory'),
     # 修改分类
-    url(r'^modifyCategory/', modifyCategory, name='modifyCategory')
+    url(r'^modifyCategory/', modifyCategory, name='modifyCategory'),
+    # 添加商品
+    url(r'^addProduct/', addProduct, name='addProduct'),
+    # 修改商品
+    url(r'^modifyProduct/', modifyProduct, name='modifyProduct'),
+    # 商品列表
+    url(r'^productList/', productList, name='productList'),
+
+    url(r'^ProductDetail/', ProductDetails, name='ProductDetail')
 ]

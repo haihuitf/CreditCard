@@ -1,5 +1,6 @@
 #coding:UTF-8
 from django import forms
+from .models import *
 
 
 
@@ -29,11 +30,24 @@ class addCategoryForm(forms.Form):
 # 修改商品分类
 class modifyCategoryForm(forms.Form):
     name = forms.CharField(label="分类名称", max_length=100)
-    status = forms.ChoiceField(label="分类状态",choices=[('0','0'),('1','1')])
+    status = forms.ChoiceField(label="分类状态", choices=[('0', '0'), ('1', '1')])
 
 # 添加商品
 class addProductForm(forms.Form):
-    code = forms.CharField(label="商品编号")
-    productName = forms.CharField(label="商品名称")
-    price = forms.CharField(label="商品价格")
-    inventory = forms.CharField(label="商品库存")
+    productName = forms.CharField(label="商品名称",max_length=100)
+    price = forms.CharField(label="商品价格",max_length=100)
+    inventory = forms.CharField(label="商品库存",max_length=100)
+
+# 修改商品
+class modifyProductForm(forms.Form):
+    productName = forms.CharField(label="商品名称",max_length=100)
+    price = forms.CharField(label="商品价格",max_length=100)
+    inventory = forms.CharField(label="商品库存",max_length=100)
+    status = forms.ChoiceField(label="商品状态", choices=[('0', '0'), ('1', '1')])
+
+class ProductDetailForm(forms.Form):
+    ProductID = forms.CharField(label="商品名称",max_length=100)
+    ProductName = forms.CharField(label="商品名称",max_length=100)
+    ProductPrice = forms.CharField(label="商品价格",max_length=100)
+    ProductNumber = forms.CharField(label="商品库存",max_length=100)
+    ProductOffer = forms.CharField(label="商品库存",max_length=100)

@@ -58,11 +58,11 @@ class CardInfo(models.Model):
     updateTime = models.DateField(auto_now_add=True)
 
 #商品product
-class product():
+class product(models.Model):
 
     id = models.AutoField(primary_key=True)
     # 分类id
-    categoryId = models.ForeignKey("category")
+    categoryId = models.ManyToManyField("category")
     # 商品编号
     code = models.IntegerField(max_length=150)
     # 商品名称
@@ -140,6 +140,18 @@ class saleorder(models.Model):
     # 更新时间
     updateTime = models.DateField(auto_now_add=True)
 
+class ProductDetail(models.Model):
+    ProductID = models.CharField(max_length=18)
+    ProductName = models.CharField(max_length=30)
+    ProductPrice = models.PositiveIntegerField()
+    ProductNumber = models.PositiveIntegerField(default=100)
+    ProductOffer = models.CharField(max_length=30)
+
+    def __str__(self):
+        return self.ProductID
 
 
-
+class MyCars(models.Model):
+    ProductID = models.CharField(max_length=18)
+    ProductName = models.CharField(max_length=30)
+    ProductPrice = models.PositiveIntegerField()
