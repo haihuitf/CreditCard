@@ -224,13 +224,17 @@ def ProductDetails(request):
     if request.method == "POST":
         print("insert")
         if 'Create' in request.POST:#新建商品
+            print(request.POST)
             print('gouer')
-            if ProductDetail.objects.filter(ProdcutID=request.POST['ProductID']):
+        if 'ProductID' in request.POST:
+            print(request.POST['ProductID'][0:4])
+            if ProductDetail.objects.filter(ProductID=request.POST['ProductID'][0:4]):
                 return HttpResponse('success')
                 # return HttpResponseRedirect('ProductList/%s' % str(request.POST['ProductID']+'C'))
             else:
-                NewProduct = ProductDetailForm(request.POST)
+                NewProduct = ProductDetailForm(data=request.POST)
                 if NewProduct.is_valid():
+                    # ModelFrom才有Save方法
                     SaveNew = NewProduct.save(commit=False)
                     SaveNew.ProductID = request.POST['ProductID'][0:4]
                     SaveNew.save()
@@ -246,7 +250,7 @@ def ProductDetails(request):
             return HttpResponse('Modify')
         # 加入购物车
         elif 'AddCar' in request.POST:
-            InputCar = MyCars.objects.create(ProdcutID=request.POST['ProductID'][0:4],
+            InputCar = MyCars.objects.create(ProductID=request.POST['ProductID'][0:4],
                                              ProductName=request.POST['ProductName'],
                                              ProductPrice=request.POST['ProductPrice'])
             InputCar.save()
@@ -279,6 +283,22 @@ def ProductDetails(request):
         return render_to_response('ProductDetail.html', {'form': fromValue, 'types': types}, context_instance=RequestContext(request))
 
 
+def MyCar(request):
+    ProductList = []
+    ProductOne = {}
+    Ap = MyCars.objects.filter()
+    for item in Ap:
+        ProductOne['ProductName'] = item.ProductName
+        ProductOne['ProductPrice'] = item.ProductPrice
+        ProductList.append(ProductOne)
+    return None
+def BuyNone(request):
+    ProductList = []
+    ProductOne = {}
+    ProductOne['ProductName'] = request.session.get('ProductName')
+    ProductOne['ProductPrice'] = request.session.get('ProductPrice')
+    ProductList.append(ProductOne)
+    return None
 
 
 

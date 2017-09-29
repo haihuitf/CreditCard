@@ -64,7 +64,7 @@ class product(models.Model):
     # 分类id
     categoryId = models.ManyToManyField("category")
     # 商品编号
-    code = models.IntegerField(max_length=150)
+    code = models.IntegerField()
     # 商品名称
     productName = models.CharField(max_length=150, blank=False)
     # 商品价格

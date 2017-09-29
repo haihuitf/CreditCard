@@ -1,5 +1,6 @@
 #coding:UTF-8
 from django import forms
+from django.forms import ModelForm
 from .models import *
 
 
@@ -45,9 +46,12 @@ class modifyProductForm(forms.Form):
     inventory = forms.CharField(label="商品库存",max_length=100)
     status = forms.ChoiceField(label="商品状态", choices=[('0', '0'), ('1', '1')])
 
-class ProductDetailForm(forms.Form):
-    ProductID = forms.CharField(label="商品名称",max_length=100)
-    ProductName = forms.CharField(label="商品名称",max_length=100)
-    ProductPrice = forms.CharField(label="商品价格",max_length=100)
-    ProductNumber = forms.CharField(label="商品库存",max_length=100)
-    ProductOffer = forms.CharField(label="商品库存",max_length=100)
+class ProductDetailForm(ModelForm):
+    # ProductID = forms.CharField(label="商品名称",max_length=100)
+    # ProductName = forms.CharField(label="商品名称",max_length=100)
+    # ProductPrice = forms.CharField(label="商品价格",max_length=100)
+    # ProductNumber = forms.CharField(label="商品库存",max_length=100)
+    # ProductOffer = forms.CharField(label="商品库存",max_length=100)'
+    class Meta:
+        model = ProductDetail
+        fields = '__all__'
